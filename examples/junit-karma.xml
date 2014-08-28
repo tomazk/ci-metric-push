@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="Chrome 32.0.1700 (Linux)" package="" timestamp="2014-08-28T13:11:01" id="0" hostname="carbon" tests="10" errors="0" failures="0" time="0.159">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 Safari/537.36"/>
+    </properties>
+    <testcase name="should add key-value pair for the current ad group" time="0.038" classname="Chrome 32.0.1700 (Linux).AdGroupCtrl setAdGroupData"/>
+    <testcase name="should store key-value pair for the current ad group even when nothing has been stored yet" time="0.011" classname="Chrome 32.0.1700 (Linux).AdGroupCtrl setAdGroupData"/>
+    <testcase name="should init accounts properly" time="0.036" classname="Chrome 32.0.1700 (Linux).MainCtrl"/>
+    <testcase name="should return true if user has the specified permission" time="0.025" classname="Chrome 32.0.1700 (Linux).MainCtrl hasPermission"/>
+    <testcase name="should return false if user does not have the specified permission" time="0.012" classname="Chrome 32.0.1700 (Linux).MainCtrl hasPermission"/>
+    <testcase name="should return false if called without specifying permission" time="0.011" classname="Chrome 32.0.1700 (Linux).MainCtrl hasPermission"/>
+    <testcase name="should prepend the number with a currency sign" time="0.006" classname="Chrome 32.0.1700 (Linux).decimalCurrency"/>
+    <testcase name="should append two decimal places by default" time="0.006" classname="Chrome 32.0.1700 (Linux).decimalCurrency"/>
+    <testcase name="should append specified number of decimal places" time="0.005" classname="Chrome 32.0.1700 (Linux).decimalCurrency"/>
+    <testcase name="should return null in case of non-number" time="0.009" classname="Chrome 32.0.1700 (Linux).decimalCurrency"/>
+    <system-out><![CDATA[
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>

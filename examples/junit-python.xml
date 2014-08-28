@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<testsuite errors="0" failures="0" name="dash.tests.test_signals.TestDashSignals-20140828125423" tests="11" time="0.121">
+	<properties/>
+	<system-out>
+<![CDATA[]]>	</system-out>
+	<system-err>
+<![CDATA[]]>	</system-err>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_account_no_request_available" time="0.002"/>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_account_request_available" time="0.020"/>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_adgroup_no_request_available" time="0.004"/>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_adgroup_request_available" time="0.013"/>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_adgroup_settings_no_request_available" time="0.002"/>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_adgroup_settings_request_available" time="0.009"/>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_adgroup_source_settings_no_request_available" time="0.004"/>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_adgroup_source_settings_request_available" time="0.006"/>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_campaign_no_request_available" time="0.004"/>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_campaign_request_available" time="0.012"/>
+	<testcase classname="dash.tests.test_signals.TestDashSignals" name="test_group_account_automatically_add" time="0.044"/>
+</testsuite>
