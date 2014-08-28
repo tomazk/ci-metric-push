@@ -55,7 +55,7 @@ class ParserTests(unittest.TestCase):
 class PushTests(unittest.TestCase):
 
     def test_get_backend(self):
-        cls = cipush.push.get_backend_class('librato')
+        cls = cipush.push.get_class('backend','librato')
         self.assertTrue(issubclass(cls, cipush.backend.BaseBackend))
 
 if __name__ == '__main__':
