@@ -2,6 +2,8 @@ import unittest
 from xml.etree import ElementTree as et
 
 import cipush.parser
+import cipush.push
+import cipush.backend
 
 
 
@@ -50,6 +52,11 @@ class ParserTests(unittest.TestCase):
             )   
 
 
+class PushTests(unittest.TestCase):
+
+    def test_get_backend(self):
+        cls = cipush.push.get_backend_class('librato')
+        self.assertTrue(issubclass(cls, cipush.backend.BaseBackend))
 
 if __name__ == '__main__':
     unittest.main()
