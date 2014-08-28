@@ -1,4 +1,5 @@
-import cipush.backend
+def push_junit(duration, num_tests ,ci_module):
+    pass
 
-class Backend(cipush.backend.BaseBackend):
+def push_coverage(coverage, ci_module):
     pass
