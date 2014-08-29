@@ -1,16 +1,19 @@
 import os
 
 import cipush.parser as p 
-from cipush.backend import librato
+from cipush.backend import librato_backend
 from cipush.backend import json_backend
 from cipush.ci import default
+from cipush.ci import circle
 
 BACKEND_MAP = (
         ('json', json_backend.Backend),
+        ('librato',librato_backend.Backend)
     )
 
 CI_MAP = (
         ('default', default.Ci),
+        ('circle', circle.Ci)
     )
 
 def get_backend(slug):

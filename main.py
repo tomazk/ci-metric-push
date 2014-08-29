@@ -15,13 +15,12 @@ import cipush.push
 
 def main():
     args = docopt(__doc__)
-
     cipush.push.push(
-        metrics_type= 'junit' if args['junit'] else 'coverage', 
-        suite_slug= args['--suite-name'] or 'main',
-        backend_slug= args['--backend'] or 'json', 
-        ci_slug= args['--ci'] or 'default',
-        path_pattern= args['<path>'],
+            metrics_type= 'junit' if args['junit'] else 'coverage', 
+            suite_slug= args['--suite-name'] or 'main',
+            backend_slug= args['--backend'] or 'json', 
+            ci_slug= args['--ci'],
+            path_pattern= args['<path>'],
         )
 
 
