@@ -23,6 +23,5 @@ def main():
             path_pattern= args['<path>'],
         )
 
-
 if __name__ == '__main__':
     main()
