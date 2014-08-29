@@ -31,9 +31,11 @@ class Backend(cipush.backend.BaseBackend):
         queue.submit()
 
         # post annotation
-        librato_annotation_name = 'circle_ci.{0}.{1}'.format(
-                metrics_type,
-                ci_instance.get_project_name()
+        librato_annotation_name = '{metrics_type}.{project_name}.{suite_slug}.{branch}'.format(
+                metrics_type=metrics_type,
+                project_name=ci_instance.get_project_name(),
+                suite_slug=suite_slug,
+                branch=ci_instance.get_branch_name(),
             )
         librato_api.post_annotation(librato_annotation_name,
                 title='build triggered by {0}'.format(ci_instance.get_user_name()), 
