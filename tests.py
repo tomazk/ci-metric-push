@@ -1,9 +1,12 @@
 import unittest
 from xml.etree import ElementTree as et
 
+from mock import patch
+
 import cipush.parser
 import cipush.push
 import cipush.backend
+import cipush.ci
 
 
 
@@ -55,8 +58,15 @@ class ParserTests(unittest.TestCase):
 class PushTests(unittest.TestCase):
 
     def test_get_backend(self):
-        module = cipush.push.get_module('backend','librato')
-        self.assertTrue(hasattr(module, 'push_coverage'))
+        cls = cipush.push.get_backend('json')
+        self.assertTrue(issubclass(cls, cipush.backend.BaseBackend))
+
+
+    def test_get_ci(self):
+        cls = cipush.push.get_ci('default')
+        self.assertTrue(issubclass(cls, cipush.ci.BaseCi))
+
+
 
 if __name__ == '__main__':
     unittest.main()
