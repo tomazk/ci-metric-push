@@ -1,4 +1,4 @@
-ci-push
+ci-metric-push
 =======
 
 *Work in progress...*
