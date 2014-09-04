@@ -1,5 +1,8 @@
 import os
 import yaml
+import logging
+
+import coloredlogs
 
 import cipush
 
@@ -63,6 +66,18 @@ def get_config_list(args):
 
 
     return config_from_cli_args(args)
+
+def configure_logging(args):
+    level = logging.DEBUG if args['--debug'] else logging.ERROR
+    coloredlogs.install(
+            level=level,
+            show_timestamps=False,
+            show_hostname=False
+        )
+
+
+
+
 
 
 

@@ -1,3 +1,7 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
 class BaseBackend(object):
 
     metric_format = '{metrics_type}.{project_name}.{suite_slug}.{branch}.{metric_slug}'
@@ -16,3 +20,4 @@ class BaseBackend(object):
         self._queue.append({
                 metric_name: metric_value
             })
+        logger.debug('captured metric %s: %s', metric_name, str(metric_value))

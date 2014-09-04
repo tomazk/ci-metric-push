@@ -1,5 +1,7 @@
 import os
 import sys
+import logging
+import traceback
 
 import cipush
 import cipush.parser as p 
@@ -8,6 +10,8 @@ from cipush.backend import json_backend
 from cipush.ci import default
 from cipush.ci import circle
 from cipush import conf
+
+logger = logging.getLogger(__name__)
 
 BACKEND_MAP = (
         ('json', json_backend.Backend()),
@@ -68,19 +72,23 @@ def submit(backend_slug, ci_slug):
 
 def push(args):
     try:
+        logger.debug('configuring')
         config_list = conf.get_config_list()
+        logger.info('configured')
+
         for single_conf_dict in config_list:
             metrics_type = 'junit' if 'junit' in single_conf_dict else 'coverage'
             d = single_conf_dict[metrics_type]
+
+            logger.debug('capturing metric type %s, suite: %s, backend: %s, ci: %s, on path: %s ', metrics_type, d['suite'], d['backend'], d['ci'], d['pwd'])
             capture_metric(metrics_type, d['suite'], d['backend'], d['ci'], d['pwd'])
+        
+        logger.debug('submitting metrics on backend: %s on ci: %s', d['backend'], d['ci'])
         submit(d['backend'], d['ci'])
     except cipush.CiPushException as e:
-        pass
-
-
-
-
-
-
-
-
+        logger.error(str(e))
+        sys.exit(1)
+    except Exception as e:
+        logger.critical(str(e))
+        logger.critical(traceback.format_exc())
+        sys.exit(1)
