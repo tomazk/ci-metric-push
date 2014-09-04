@@ -22,7 +22,7 @@ BACKEND_MAP = (
 CI_MAP = (
         ('default', default.Ci()),
         ('circle', circle.Ci()),
-        ('travis', travis.Ci()
+        ('travis', travis.Ci()),
     )
 
 def get_backend(slug):
