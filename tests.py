@@ -203,6 +203,6 @@ class ConfTests(unittest.TestCase):
 if __name__ == '__main__':
     import sys
 
-    sys.exit(0)
+    sys.exit(1)
 
     unittest.main()

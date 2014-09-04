@@ -10,7 +10,6 @@ setup(
         'librato-metrics==0.4.11',
         'docopt==0.6.2',
         'PyYAML==3.11',
-        'termcolor==1.1.0',
     ],
 
     author = "Tomaz Kovacic",
