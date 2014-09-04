@@ -1,4 +1,5 @@
 import os
+import sys
 
 import cipush
 import cipush.parser as p 
@@ -66,12 +67,15 @@ def submit(backend_slug, ci_slug):
     
 
 def push(args):
-    config_list = conf.get_config_list()
-    for single_conf_dict in config_list:
-        metrics_type = 'junit' if 'junit' in single_conf_dict else 'coverage'
-        d = single_conf_dict[metrics_type]
-        capture_metric(metrics_type, d['suite'], d['backend'], d['ci'], d['pwd'])
-    submit(d['backend'], d['ci'])
+    try:
+        config_list = conf.get_config_list()
+        for single_conf_dict in config_list:
+            metrics_type = 'junit' if 'junit' in single_conf_dict else 'coverage'
+            d = single_conf_dict[metrics_type]
+            capture_metric(metrics_type, d['suite'], d['backend'], d['ci'], d['pwd'])
+        submit(d['backend'], d['ci'])
+    except cipush.CiPushException as e:
+        pass
 
 
 

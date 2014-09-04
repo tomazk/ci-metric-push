@@ -199,12 +199,10 @@ class ConfTests(unittest.TestCase):
             self.fail()
         except AssertionError:
             pass
-        
-
-
-
-
-
 
 if __name__ == '__main__':
+    import sys
+
+    sys.exit(0)
+
     unittest.main()
