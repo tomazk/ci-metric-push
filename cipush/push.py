@@ -66,6 +66,10 @@ def capture_metric(metrics_type, suite_slug, backend_slug, ci_slug, path_pattern
 def submit(backend_slug, ci_slug):
     backend_instance = get_backend(backend_slug)
     ci_instance = get_ci(ci_slug)
+    print ci_instance.get_project_name()
+    print ci_instance.get_branch_name()
+    print ci_instance.get_build_link()
+
 
     backend_instance.submit(ci_instance)    
     

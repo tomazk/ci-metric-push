@@ -1,0 +1,7 @@
+- coverage:
+    pwd: "coverage.xml"
+    suite: backend
+    ci: travis
+    backend: json
+
+

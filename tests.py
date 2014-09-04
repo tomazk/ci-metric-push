@@ -1,5 +1,6 @@
 import os
 import unittest
+import shutil
 from xml.etree import ElementTree as et
 
 from mock import patch
@@ -139,7 +140,7 @@ class PushTests(unittest.TestCase):
 
 class ConfTests(unittest.TestCase):
 
-    conf_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '.pushci.yml.example')
+    conf_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'examples/.pushci.yml.example')
 
     def test_default_config_file_path(self):
         self.assertEqual(
@@ -162,12 +163,14 @@ class ConfTests(unittest.TestCase):
         cipush.conf.validate_config(conf_list)
             
     def test_parse_config_file_fail(self):
+        shutil.move('.pushci.yml', '.pushci.yml.backup')
         self.assertFalse(os.path.exists(cipush.conf.default_config_file_path()))
         try:
             cipush.conf.parse_config_file()
             self.fail()
         except cipush.CiPushException:
             pass
+        shutil.move('.pushci.yml.backup', '.pushci.yml')
     
     def test_parse_config_file_fail_unvalid_yaml(self):
         readme_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'README.md')
