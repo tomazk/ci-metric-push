@@ -3,6 +3,7 @@ from xml.etree import ElementTree as et
 
 from mock import patch
 
+import cipush
 import cipush.parser
 import cipush.push
 import cipush.backend
@@ -57,16 +58,43 @@ class ParserTests(unittest.TestCase):
 
 class PushTests(unittest.TestCase):
 
-    def test_get_backend(self):
-        cls = cipush.push.get_backend('json')
-        self.assertTrue(issubclass(cls, cipush.backend.BaseBackend))
+    def tearDown(self):
+        backend_instance = cipush.push.get_backend('json')
+        del backend_instance._queue[:]
 
+    def test_get_backend(self):
+        instance = cipush.push.get_backend('json')
+        self.assertTrue(isinstance(instance, cipush.backend.BaseBackend))
 
     def test_get_ci(self):
-        cls = cipush.push.get_ci('default')
-        self.assertTrue(issubclass(cls, cipush.ci.BaseCi))
+        instance = cipush.push.get_ci('default')
+        self.assertTrue(isinstance(instance, cipush.ci.BaseCi))
 
+    def test_capture_metric_coverage(self):
+        backend_instance = cipush.push.get_backend('json')
+        self.assertEqual(len(backend_instance._queue), 0)
+
+        cipush.push.capture_metric('coverage', 'frontend', 'json', 'default', 'examples/cobertura-karma.xml')
+        
+        self.assertEqual(len(backend_instance._queue), 1)
+        metric = backend_instance._queue.pop()
+        self.assertTrue('coverage.default_project.frontend.default_branch.coverage' in metric)
+        self.assertAlmostEqual(metric['coverage.default_project.frontend.default_branch.coverage'], 0.1485)
     
+    def test_capture_metric_coverage_fail(self):
+        try:
+            cipush.push.capture_metric('coverage', 'frontend', 'json', 'default', 'examples/cobertura-*.xml')
+            self.fail()
+        except cipush.CiPushException:
+            pass
+
+    #def test_capture_metric_junit(self):
+
+
+
+
+
+
 
 
 

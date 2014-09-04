@@ -1,0 +1,2 @@
+class CiPushException(Exception):
+    pass

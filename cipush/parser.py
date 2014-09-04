@@ -1,6 +1,7 @@
 import glob
 from xml.etree import ElementTree as et
 
+import cipush
 
 def get_coverage_from_cobertura_xml(tree):
     root = tree.getroot()
@@ -33,6 +34,12 @@ def aggregate_from_files(aggregate_function, path_pattern):
 
 def coverage_from_path(path_pattern):
     files = glob.glob(path_pattern)
+    if len(files) != 1:
+        raise cipush.CiPushException(
+            'coverage can only be extracted from a single cobertura '
+            'formated xml file'
+            )
+
     file_, = files
     return get_coverage_from_cobertura_xml(et.parse(file_))
 
