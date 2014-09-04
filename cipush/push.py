@@ -9,6 +9,7 @@ from cipush.backend import librato_backend
 from cipush.backend import json_backend
 from cipush.ci import default
 from cipush.ci import circle
+from cipush.ci import travis
 from cipush import conf
 
 logger = logging.getLogger(__name__)
@@ -20,7 +21,8 @@ BACKEND_MAP = (
 
 CI_MAP = (
         ('default', default.Ci()),
-        ('circle', circle.Ci())
+        ('circle', circle.Ci()),
+        ('travis', travis.Ci()
     )
 
 def get_backend(slug):
