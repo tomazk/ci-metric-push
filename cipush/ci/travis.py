@@ -5,7 +5,7 @@ class Ci(cipush.ci.BaseCi):
 
     def get_project_name(self):
         travis_repo_slug = os.environ['TRAVIS_REPO_SLUG']
-        _, project_name = travis_repo_slug.split()
+        _, project_name = travis_repo_slug.split('/')
 
         return project_name
 
