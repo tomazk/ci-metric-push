@@ -66,9 +66,25 @@ class PushTests(unittest.TestCase):
         instance = cipush.push.get_backend('json')
         self.assertTrue(isinstance(instance, cipush.backend.BaseBackend))
 
+
+    def test_get_backend_fail(self):
+        try:
+            cipush.push.get_backend('does-not-exist')
+            self.fail()
+        except cipush.CiPushException:
+            pass
+
     def test_get_ci(self):
         instance = cipush.push.get_ci('default')
         self.assertTrue(isinstance(instance, cipush.ci.BaseCi))
+
+
+    def test_get_ci_fail(self):
+        try:
+            cipush.push.get_ci('does-not-exist')
+            self.fail()
+        except cipush.CiPushException:
+            pass
 
     def test_capture_metric_coverage(self):
         backend_instance = cipush.push.get_backend('json')
@@ -88,7 +104,27 @@ class PushTests(unittest.TestCase):
         except cipush.CiPushException:
             pass
 
-    #def test_capture_metric_junit(self):
+    def test_capture_metric_coverage_fail_2(self):
+        try:
+            cipush.push.capture_metric('coverage', 'frontend', 'json', 'default', 'does-not-exist')
+            self.fail()
+        except cipush.CiPushException:
+            pass
+
+    def test_capture_metric_junit(self):
+        backend_instance = cipush.push.get_backend('json')
+        self.assertEqual(len(backend_instance._queue), 0)
+
+        cipush.push.capture_metric('junit', 'backend', 'json', 'default', 'examples/junit-*.xml')
+        
+        self.assertEqual(len(backend_instance._queue), 2)
+        metric = backend_instance._queue.pop()
+        self.assertTrue('junit.default_project.backend.default_branch.num_tests' in metric)
+        self.assertEqual(metric['junit.default_project.backend.default_branch.num_tests'], 21)
+    
+        metric = backend_instance._queue.pop()
+        self.assertTrue('junit.default_project.backend.default_branch.duration' in metric)
+        self.assertAlmostEqual(metric['junit.default_project.backend.default_branch.duration'], 0.159 + 0.121)
 
 
 

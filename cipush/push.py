@@ -1,5 +1,6 @@
 import os
 
+import cipush
 import cipush.parser as p 
 from cipush.backend import librato_backend
 from cipush.backend import json_backend
@@ -19,11 +20,27 @@ CI_MAP = (
 
 def get_backend(slug):
     d = dict(BACKEND_MAP)
-    return d[slug]
+    try:
+        return d[slug]
+    except KeyError:
+        raise cipush.CiPushException(
+            'no backend available for slug: {slug} '
+            '- backends supported: {backends}'.format(
+                    slug=slug,
+                    backends= ','.join(d.keys())
+                ))
 
 def get_ci(slug):
     d = dict(CI_MAP)
-    return d[slug]
+    try:
+        return d[slug]
+    except:
+        raise cipush.CiPushException(
+            'no CI available for slug: {slug} '
+            '- CIs supported: {ci}'.format(
+                    slug=slug,
+                    ci= ','.join(d.keys())
+                ))
 
 
 def capture_metric(metrics_type, suite_slug, backend_slug, ci_slug, path_pattern):
