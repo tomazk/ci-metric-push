@@ -8,7 +8,8 @@ setup(
 
     install_requires = [
         'librato-metrics==0.4.11',
-        'docopt==0.6.2'
+        'docopt==0.6.2',
+        'PyYAML==3.11',
     ],
 
     author = "Tomaz Kovacic",

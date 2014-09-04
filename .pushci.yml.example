@@ -1,0 +1,13 @@
+- junit:
+    pwd: "examples/junit-*"
+    suite: frontend
+    ci: default
+    backend: json
+
+- coverage:
+    pwd: "examples/cobertura-karma.xml"
+    suite: backend
+    ci: default
+    backend: json
+
+

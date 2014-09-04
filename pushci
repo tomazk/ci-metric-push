@@ -10,19 +10,28 @@ Options:
     -c <ci>, --ci <ci>
     -b <backend>, --backend <backend>
     -s <suite_name>, --suite-name <suite_name>
+    -f <config_file>, --config-file <config_file> 
 '''
 from docopt import docopt
 import cipush.push
 
 def main():
     args = docopt(__doc__)
+
+    backend_slug = args['--backend'] or 'json', 
+    ci_slug= args['--ci'] or 'default',
+
     cipush.push.push(
             metrics_type= 'junit' if args['junit'] else 'coverage', 
             suite_slug= args['--suite-name'] or 'main',
-            backend_slug= args['--backend'] or 'json', 
-            ci_slug= args['--ci'],
+            backend_slug= backend_slug, 
+            ci_slug= ci_slug,
             path_pattern= args['<path>'],
+            config_file= args['--config-file'],
         )
+    cipush.push.submit(backend_slug, ci_slug)
+    
+
 
 if __name__ == '__main__':
     main()

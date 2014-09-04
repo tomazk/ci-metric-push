@@ -66,6 +66,8 @@ class PushTests(unittest.TestCase):
         cls = cipush.push.get_ci('default')
         self.assertTrue(issubclass(cls, cipush.ci.BaseCi))
 
+    
+
 
 
 if __name__ == '__main__':
