@@ -1,3 +1,4 @@
+import os
 import unittest
 from xml.etree import ElementTree as et
 
@@ -8,6 +9,7 @@ import cipush.parser
 import cipush.push
 import cipush.backend
 import cipush.ci
+import cipush.conf
 
 
 
@@ -97,14 +99,14 @@ class PushTests(unittest.TestCase):
         self.assertTrue('coverage.default_project.frontend.default_branch.coverage' in metric)
         self.assertAlmostEqual(metric['coverage.default_project.frontend.default_branch.coverage'], 0.1485)
     
-    def test_capture_metric_coverage_fail(self):
+    def test_capture_metric_coverage_fail_more_then_one_matching_file(self):
         try:
             cipush.push.capture_metric('coverage', 'frontend', 'json', 'default', 'examples/cobertura-*.xml')
             self.fail()
         except cipush.CiPushException:
             pass
 
-    def test_capture_metric_coverage_fail_2(self):
+    def test_capture_metric_coverage_fail_no_matches(self):
         try:
             cipush.push.capture_metric('coverage', 'frontend', 'json', 'default', 'does-not-exist')
             self.fail()
@@ -127,7 +129,77 @@ class PushTests(unittest.TestCase):
         self.assertAlmostEqual(metric['junit.default_project.backend.default_branch.duration'], 0.159 + 0.121)
 
 
+    def test_capture_metric_junit_fail_no_matches(self):
+        try:
+            cipush.push.capture_metric('junit', 'backend', 'json', 'default', 'does-not-exist')
+            self.fail()
+        except cipush.CiPushException:
+            pass
 
+
+class ConfTests(unittest.TestCase):
+
+    conf_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '.pushci.yml.example')
+
+    def test_default_config_file_path(self):
+        self.assertEqual(
+                cipush.conf.default_config_file_path(),
+                os.path.join(os.path.dirname(os.path.realpath(__file__)), '.pushci.yml')
+            )
+
+    def test_parse_config_file(self):
+        conf_list = cipush.conf.parse_config_file(self.conf_file_path)
+        self.assertEqual(conf_list, [
+                {'junit': {'backend': 'json',
+                    'ci': 'default',
+                    'pwd': 'examples/junit-*',
+                    'suite': 'frontend'}},
+                {'coverage': {'backend': 'json',
+                       'ci': 'default',
+                       'pwd': 'examples/cobertura-karma.xml',
+                       'suite': 'backend'}}
+            ])
+        cipush.conf.validate_config(conf_list)
+            
+    def test_parse_config_file_fail(self):
+        self.assertFalse(os.path.exists(cipush.conf.default_config_file_path()))
+        try:
+            cipush.conf.parse_config_file()
+            self.fail()
+        except cipush.CiPushException:
+            pass
+    
+    def test_parse_config_file_fail_unvalid_yaml(self):
+        readme_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'README.md')
+        self.assertTrue(os.path.exists(readme_path))
+        try:
+            cipush.conf.parse_config_file(readme_path)
+            self.fail()
+        except cipush.CiPushException:
+            pass
+
+    def test_validate_config_fail(self):
+        conf_list = \
+            [{'junit': {'backend': 'json',
+                'ci': 'default',
+                'suite': 'frontend'}}]
+        try:
+            cipush.conf.validate_config(conf_list)
+            self.fail()
+        except AssertionError:
+            pass
+        
+    def test_validate_config_fail_2(self):
+        conf_list = \
+            [{'does-not-exist': {'backend': 'json',
+                'ci': 'default',
+                'suite': 'frontend'}}]
+        try:
+            cipush.conf.validate_config(conf_list)
+            self.fail()
+        except AssertionError:
+            pass
+        
 
 
 

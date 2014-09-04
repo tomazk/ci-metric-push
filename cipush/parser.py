@@ -30,14 +30,18 @@ def get_duration_from_junit_xml(tree):
 
 
 def aggregate_from_files(aggregate_function, path_pattern):
-    return sum(aggregate_function(et.parse(p)) for p in glob.glob(path_pattern))
+    files = glob.glob(path_pattern)
+    if len(files) == 0:
+        raise cipush.CiPushException('no junit xml files matched with pattern: {0}'.format(path_pattern))
+    return sum(aggregate_function(et.parse(p)) for p in files)
 
 def coverage_from_path(path_pattern):
     files = glob.glob(path_pattern)
     if len(files) != 1:
         raise cipush.CiPushException(
             'coverage can only be extracted from a single cobertura '
-            'formated xml file'
+            'formated xml file - current pattern:{0} '
+            'matches more then one file'.format(path_pattern)
             )
 
     file_, = files

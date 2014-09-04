@@ -16,7 +16,15 @@ from docopt import docopt
 import cipush.push
 
 def main():
+    import sys
+    import os
+
+    print os.getcwd()
+    print sys.argv
+
+    return
     args = docopt(__doc__)
+
 
     backend_slug = args['--backend'] or 'json', 
     ci_slug= args['--ci'] or 'default',
