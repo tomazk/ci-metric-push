@@ -73,7 +73,8 @@ def submit(backend_slug, ci_slug):
 def push(args):
     try:
         logger.debug('configuring')
-        config_list = conf.get_config_list()
+        conf.configure_logging(args)
+        config_list = conf.get_config_list(args)
         logger.info('configured')
 
         for single_conf_dict in config_list:
@@ -89,6 +90,5 @@ def push(args):
         logger.error(str(e))
         sys.exit(1)
     except Exception as e:
-        logger.critical(str(e))
-        logger.critical(traceback.format_exc())
+        logger.critical('%s\n%s', repr(e), traceback.format_exc())
         sys.exit(1)

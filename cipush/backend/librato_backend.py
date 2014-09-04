@@ -1,5 +1,9 @@
 import os
+import logging
+
 import cipush.backend
+
+logger = logging.getLogger(__name__)
 
 def connect_to_librato():
     import librato
@@ -30,13 +34,16 @@ class Backend(cipush.backend.BaseBackend):
     def submit(self, ci_instance=None):
 
         librato_api = connect_to_librato()
+        logger.debug('connected to librato using env variables LIBRATO_USER and LIBRATO_TOKEN')
 
         queue = librato_api.new_queue()
         for metric_name, value in self._queue.iteritems():
             queue.add(metric_name, value, type='gauge', source='circle-ci')
         queue.submit()
+        logger.debug('submitted metrics to librato')
 
         if ci_instance:
-           post_librato_annotation(librato_api, ci_instance) 
+           post_librato_annotation(librato_api, ci_instance)
+           logger.debug('posted build annotation to librato')
 
 

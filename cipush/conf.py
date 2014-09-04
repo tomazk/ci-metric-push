@@ -35,11 +35,11 @@ def validate_config(config_list):
             validate_keys(single_conf_dict['coverage'])
 
 def config_from_cli_args(args):
-    metrics_type= 'junit' if args['junit'] else 'coverage', 
-    suite_slug= args['--suite-name'] or 'main',
-    backend_slug = args['--backend'] or 'json', 
-    ci_slug= args['--ci'] or 'default',
-    path_pattern= args['<path>'],
+    metrics_type= 'junit' if args['junit'] else 'coverage'
+    suite_slug= args['--suite-name'] or 'main'
+    backend_slug = args['--backend'] or 'json' 
+    ci_slug= args['--ci'] or 'default'
+    path_pattern= args['<path>']
 
     return [{
             metrics_type: {
@@ -51,21 +51,25 @@ def config_from_cli_args(args):
         }]
 
 def get_config_list(args):
+    if args['junit'] or args['coverage']:
+        return config_from_cli_args(args)
+
     try:
         if args['--config-file']:
             config_list = parse_config_file(args['--config-file'])
             validate_config(config_list)
             return config_list
 
-        if os.path.exists(default_config_file_path()):
+        elif os.path.exists(default_config_file_path()):
             config_list = parse_config_file(default_config_file_path())
             validate_config(config_list)
             return config_list
+        else:
+            raise cipush.CiPushException('no config file provided')
+
     except AssertionError:
         raise cipush.CiPushException('unvalid yaml config structure')
 
-
-    return config_from_cli_args(args)
 
 def configure_logging(args):
     level = logging.DEBUG if args['--debug'] else logging.ERROR
