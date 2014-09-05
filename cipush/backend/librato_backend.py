@@ -17,7 +17,7 @@ def connect_to_librato():
     return librato.connect(librato_user, librato_token)
 
 def post_librato_annotation(librato_api, ci_instance):    
-    librato_annotation_name = '{project_name}.{branch}'.format(
+    librato_annotation_name = 'build_annotation.{project_name}.{branch}'.format(
             project_name=ci_instance.get_project_name(),
             branch=ci_instance.get_branch_name(),
         )
