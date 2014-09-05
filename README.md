@@ -1,7 +1,7 @@
 ci-metric-push
 =======
 
-[![Build Status](https://travis-ci.org/tomazk/ci-metric-push.svg?branch=capture)](https://travis-ci.org/tomazk/ci-metric-push)
+[![Build Status](https://travis-ci.org/Zemanta/ci-metric-push.svg)](https://travis-ci.org/Zemanta/ci-metric-push)
 
 *Work in progress...*
 
