@@ -56,11 +56,102 @@ after_script:
 
 ```
 
+Supported Backends
+------------------
+
+Currently `pushci` only supports pushing coverage and test metrics to [**librato**](http://librato.com) backend via their REST API. 
+
+`pushci` uses enviroment variables `LIBRATO_USER` and `LIBRATO_TOKEN` to authenticate with librato api. Just make sure they are set within your container. 
+
+Librato backend also emits an [annotation](http://dev.librato.com/v1/annotations) for every build so you can track down every chnage in your metric to the exact build.
+
+Supported Metrics
+-----------------
+
+- **number of unit tests** are extracted from JUnit XML
+- **duration of test suite** is also extracted from JUnit XML
+- **coverage** is extracted from cobertura formatted XML file
 
 
+Configuration
+-------------
+
+`pushci` can be configured either by cli arguments or in a `.pushci.yml` config file
+
+**Arguments:**
+
+* `<path>` unix style pathname pattern to your JUnit or cobertura XML files
+* `<ci>` ci enviroment `circle|travis`
+* `<suite_name>` suite name will appear as part of your metric so you're able to distinguish between suites that run in the same container (*e.g. frotend or backend suite*)
+* `<config_file>` if not provided pushci will look for `.pushci.yml` in the current directory
+
+**CLI usage**
+
+```
+
+Usage:
+    pushci [options] 
+    pushci (junit|coverage) <path> [options] 
+    pushci -h | --help
+
+Options:
+    -c <ci>, --ci <ci>
+    -b <backend>, --backend <backend>
+    -s <suite_name>, --suite-name <suite_name>
+    -f <config_file>, --config-file <config_file> 
+    -d, --debug
+
+```
+
+**CLI examples**
+
+* `$ pushci` will read config from `.pushci.yml` and execute
+* `$ pushci --config-file ./example/.pushci.yml`
+* `$ pushci junit "TEST-*.xml" -b librato -c circle -s frontend`
+
+**`.pushci.yml` format**
+
+```
+- [coverage|junit]:
+    pwd: <path>
+    ci: <ci>
+    backend: <backend>
+    suite: <suite_name>
+
+```
+
+**`.pushci.yml` example**
+
+```
+- coverage:
+    pwd: client/coverage/cobertura/C*/cobertura.xml
+    ci: circle
+    backend: librato
+    suite: eins_frontend
+- junit:
+    pwd: client/test-results.xml
+    ci: circle
+    backend: librato
+    suite: eins_frontend
+
+- coverage:
+    pwd: server/coverage.xml
+    ci: circle
+    backend: librato
+    suite: eins_backend
+- junit:
+    pwd: server/.junit_xml/TEST-*
+    ci: circle
+    backend: librato
+    suite: eins_backend
+
+```
 
 
-**Comments**
+Comments
+--------
 
 Tested on python 2.6, 2.7, 3.4 (contributions welcome)
+
+For licence see LICENCE file in this repo.
 
