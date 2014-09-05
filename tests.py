@@ -96,9 +96,9 @@ class PushTests(unittest.TestCase):
         cipush.push.capture_metric('coverage', 'frontend', 'json', 'default', 'examples/cobertura-karma.xml')
         
         self.assertEqual(len(backend_instance._queue), 1)
-        metric = backend_instance._queue.pop()
-        self.assertTrue('coverage.default_project.frontend.default_branch.coverage' in metric)
-        self.assertAlmostEqual(metric['coverage.default_project.frontend.default_branch.coverage'], 0.1485)
+        metric_name, metric_value = backend_instance._queue.pop()
+        self.assertEqual(metric_name, 'coverage.default_project.frontend.default_branch.coverage')
+        self.assertAlmostEqual(metric_value, 0.1485)
     
     def test_capture_metric_coverage_fail_more_then_one_matching_file(self):
         try:
@@ -121,13 +121,13 @@ class PushTests(unittest.TestCase):
         cipush.push.capture_metric('junit', 'backend', 'json', 'default', 'examples/junit-*.xml')
         
         self.assertEqual(len(backend_instance._queue), 2)
-        metric = backend_instance._queue.pop()
-        self.assertTrue('junit.default_project.backend.default_branch.num_tests' in metric)
-        self.assertEqual(metric['junit.default_project.backend.default_branch.num_tests'], 21)
+        metric_name, metric_value = backend_instance._queue.pop()
+        self.assertEqual(metric_name, 'junit.default_project.backend.default_branch.num_tests')
+        self.assertEqual(metric_value, 21)
     
-        metric = backend_instance._queue.pop()
-        self.assertTrue('junit.default_project.backend.default_branch.duration' in metric)
-        self.assertAlmostEqual(metric['junit.default_project.backend.default_branch.duration'], 0.159 + 0.121)
+        metric_name, metric_value = backend_instance._queue.pop()
+        self.assertEqual(metric_name, 'junit.default_project.backend.default_branch.duration')
+        self.assertAlmostEqual(metric_value, 0.159 + 0.121)
 
 
     def test_capture_metric_junit_fail_no_matches(self):

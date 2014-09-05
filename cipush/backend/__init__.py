@@ -17,7 +17,5 @@ class BaseBackend(object):
                 branch=ci_instance.get_branch_name(),
                 metric_slug=metric_slug
             )
-        self._queue.append({
-                metric_name: metric_value
-            })
+        self._queue.append((metric_name, metric_value))
         logger.debug('captured metric %s: %s', metric_name, str(metric_value))

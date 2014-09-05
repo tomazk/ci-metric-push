@@ -37,7 +37,7 @@ class Backend(cipush.backend.BaseBackend):
         logger.debug('connected to librato using env variables LIBRATO_USER and LIBRATO_TOKEN')
 
         queue = librato_api.new_queue()
-        for metric_name, value in self._queue.iteritems():
+        for metric_name, value in self._queue:
             queue.add(metric_name, value, type='gauge', source='circle-ci')
         queue.submit()
         logger.debug('submitted metrics to librato')
