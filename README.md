@@ -21,7 +21,7 @@ Usage
 
 In a nutshell:
 
-- make sure your test suite emits JUnit formatted and cobertura formatted XML files (*made pupular by jenkins both formats are widely supported by test suites for various runtimes*)
+- make sure your test suite emits JUnit formatted and cobertura formatted XML files (*made popular by jenkins, both formats are widely supported by test suites for various runtimes*)
 - install this python package `pip install git+git://github.com/Zemanta/ci-metric-push.git#cipush`
 - run your test suite
 - then run `pushci junit "path/to/*.xml"` 
